@@ -1,26 +1,109 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+  scroll-behavior: smooth;
+  background: black;
+  color: white;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* 🎥 Spline Section */
+.spline-section {
+  height: 100vh;
+  background: black;
+  position: relative;
+  overflow: hidden;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 🟨 Quarter Bubble */
+.quarter-bubble {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background-color: white;
+  border-top-left-radius: 300px;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  z-index: 10;
+  cursor: pointer;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.quarter-bubble:hover {
+  transform: scale(1.4); /* expands to ~400x400 */
+}
+
+/* 💬 Default Text */
+.bubble-default-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  transition: opacity 0.3s ease;
+}
+
+.quarter-bubble:hover .bubble-default-text {
+  opacity: 0;
+}
+
+/* 🌀 Bubble SVG Menu */
+.bubble-svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: auto; /* allow hover detection */
+}
+
+.quarter-bubble:hover .bubble-svg {
+  opacity: 1;
+}
+
+/* ✨ Arc Text */
+.arc-link {
+  font-size: 20px;
+  font-weight: bold;
+  fill: black;
+  transition: fill 0.3s ease;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.arc-link textPath {
+  pointer-events: visiblePainted; /* ensures hover triggers only on text */
+}
+
+/* 🎨 Hover Colors */
+.arc-blue:hover {
+  fill: #007bff;
+}
+.arc-magenta:hover {
+  fill: #ff00ff;
+}
+.arc-orange:hover {
+  fill: #ff6600;
+}
+
+/* 🧩 Sections */
+.content-section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: bold;
 }
