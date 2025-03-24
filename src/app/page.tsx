@@ -10,7 +10,18 @@ export default function Home() {
 
         {/* Quarter-Circle Bubble */}
         <div className="quarter-bubble">
-          <span className="bubble-default-text">over here!</span>
+
+          <span className="bubble-default-text">
+            {"over here!".split("").map((char, index) => (
+              <span
+                key={index}
+                className="wave-letter"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
+          </span>
 
           <svg className="bubble-svg" viewBox="0 0 400 400">
             <defs>
