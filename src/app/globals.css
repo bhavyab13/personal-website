@@ -1,4 +1,10 @@
 /* Reset */
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap');
+
+html, body {
+  font-family: 'Inconsolata', monospace;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -7,10 +13,12 @@
 html, body {
   height: 100%;
   width: 100%;
-  font-family: sans-serif;
+  font-family: 'Inconsolata', monospace;
   scroll-behavior: smooth;
   background: black;
   color: white;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
 }
 
 /* 🎥 Spline Section */
@@ -26,8 +34,8 @@ html, body {
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   background-color: white;
   border-top-left-radius: 300px;
   transition: transform 0.3s ease;
@@ -37,7 +45,7 @@ html, body {
 }
 
 .quarter-bubble:hover {
-  transform: scale(1.5); /* expands to ~400x400 */
+  transform: scale(1.8); /* expands to ~400x400 */
 }
 
 /* 💬 Default Text */
@@ -120,4 +128,186 @@ html, body {
   50% {
     transform: translateY(-4px);
   }
+}
+
+/********************************************/
+/* About Section Container */
+.about-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/********************************************/
+/* Centered Heading + Orange Star */
+.about-heading-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5; /* in front of ellipse */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px; /* bigger hover area */
+}
+
+/* Orange Circle (Star) */
+.orange-circle {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  border-radius: 50%;
+  background-color: orange;
+  opacity: 0;
+  transition: width 2s ease, height 2s ease, opacity 2s ease;
+  box-shadow: 0 0 20px 10px rgba(255, 165, 0, 0.4);
+  z-index: 1;
+}
+
+/* Heading Text */
+.about-heading {
+  font-size: 80px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: transform 2s ease;
+  text-align: center;
+  z-index: 2;
+  margin: 0;
+}
+
+/* Hover effect: shrink text, show circle */
+.about-heading-wrapper:hover .about-heading {
+  transform: scale(0.3);
+}
+
+.about-heading-wrapper:hover .orange-circle {
+  width: 100px;
+  height: 100px;
+  opacity: 1;
+}
+
+/* Star pulses after 2s (optional) */
+.orange-circle.pulsing {
+  animation: starPulse 2s ease-in-out infinite;
+}
+@keyframes starPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px 4px rgba(255, 165, 0, 0.4);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px 10px rgba(255, 165, 0, 0.7);
+  }
+}
+
+/********************************************/
+/* Ellipse -> hidden by default, shows on hover */
+/* Static Ellipse Outline (only visible while hovering) */
+.big-ellipse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 110vh;  /* ellipse width in viewport units */
+  height: 50vh;  /* ellipse height */
+  transform: translate(-50%, -50%);
+  border: 1px solid white;
+  border-radius: 50% / 50%;
+  z-index: 1;
+  opacity: 0; /* hidden by default */
+  transition: opacity 0.5s ease;
+}
+.big-ellipse.show-ellipse {
+  opacity: 1;
+}
+
+/********************************************/
+/* Corner Boxes => Motion Path (offset-path) */
+.corner-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Move the box's center to the path coordinate */
+  transform: translate(-50%, -50%);
+  offset-rotate: 0deg; /* keep images upright, no rotation */
+  offset-anchor: 50% 50%;
+  /* The ellipse path is ~110 wide x 50 tall => radius ~55 x 25 */
+  /* This path draws an ellipse centered at (0,0) with radii 55,25 */
+  offset-path: path("M 0,-25 A 55,25 0 1,1 0,25 A 55,25 0 1,1 0,-25");
+  /* No animation by default */
+  animation: none;
+}
+
+/* Animate offset-distance from 0% -> 100% in revolve */
+.corner-box.orbit-active {
+  animation: revolve 10s linear infinite;
+  animation-timing-function: linear;
+}
+
+/* One full loop = offset-distance 0% -> 100% */
+@keyframes revolve {
+  0%   { offset-distance: 0%; }
+  100% { offset-distance: 100%; }
+}
+
+/********************************************/
+/* Position each box at corners of ellipse by offset-distance + delay */
+.top-left {
+  /* Start at ~12.5% around ellipse path */
+  offset-distance: 12.5%;
+  animation-delay: -1.25s; /* negative so it starts at that position */
+}
+.top-right {
+  /* ~37.5% */
+  offset-distance: 60.5%;
+  animation-delay: -3.75s;
+}
+.bottom-right {
+  /* ~62.5% */
+  offset-distance: 62.5%;
+  animation-delay: -6.25s;
+}
+.bottom-left {
+  /* ~87.5% */
+  offset-distance: 87.5%;
+  animation-delay: -8.75s;
+}
+
+/********************************************/
+/* Image + Text Inside Each Box */
+.about-img {
+  display: block;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+  width: 100%;
+}
+.large {
+  width: 400px;
+}
+.medium {
+  width: 300px;
+}
+.small {
+  width: 200px;
+}
+
+/* Center text on the image, no overflow */
+.image-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* On hover, scale each image */
+.about-img:hover {
+  transform: scale(1.08);
 }
